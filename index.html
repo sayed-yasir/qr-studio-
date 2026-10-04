@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="QR Studio v1 — private, responsive QR generator, designer, scanner, batch studio and local QR library.">
+<meta name="theme-color" content="#2563eb"><meta property="og:title" content="QR Studio v1"><meta property="og:description" content="Private local QR generator, designer, scanner and batch studio.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<title>QR Studio v1 — QR Generator & Designer</title>
+<link rel="stylesheet" href="style.css">
+<script src="qr-core.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="head">
+    <a class="brand" href="#generator" data-page="generator" aria-label="QR Studio home"><img class="brand-logo" src="assets/logo.png" width="38" height="38" alt="QR Studio logo"><span>QR Studio</span><small>v1</small></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <button data-page="generator" class="active">Generator</button><button data-page="scanner">Scanner</button><button data-page="batch">Batch</button><button data-page="templates">Templates</button><button data-page="history">My QR</button>
+    </nav>
+    <div class="head-actions">
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">☾</button>
+      <button id="moreBtn" class="icon-btn more-btn" aria-label="More options" aria-expanded="false">⋮</button>
+      <div id="moreMenu" class="more-menu" hidden>
+        <button data-more="shortcuts">⌨ Keyboard shortcuts</button>
+        <button data-more="privacy">◉ Privacy center</button>
+        <button data-more="install" id="menuInstall" hidden>⇩ Install app</button>
+        <button data-more="reset">↺ Reset generator</button>
+        <button data-more="about">ⓘ About QR Studio</button>
+      </div>
+    </div>
+  </div>
+</header>
+<main>
+<section id="page-generator" class="page active">
+  <div class="container">
+    <div class="hero compact-hero"><span>PRIVATE • RESPONSIVE • LOCAL</span><h1>Make QR codes that look good and scan reliably.</h1><p>Create, design, export and manage QR codes directly on your device.</p></div>
+    <div class="workspace">
+      <section class="card builder-card">
+        <div class="section-head"><div><h2>Generator</h2><p class="muted">Choose a type and enter your content.</p></div><span class="badge">LOCAL</span></div>
+        <div class="types" role="tablist" aria-label="QR type">
+          <button class="type active" data-type="url">↗<b>URL</b></button><button class="type" data-type="text">¶<b>Text</b></button><button class="type" data-type="wifi">◉<b>Wi-Fi</b></button><button class="type" data-type="email">@<b>Email</b></button><button class="type" data-type="phone">⌕<b>Phone</b></button><button class="type" data-type="contact">♙<b>Contact</b></button><button class="type" data-type="location">⌖<b>Location</b></button><button class="type" data-type="sms">✉<b>SMS</b></button><button class="type" data-type="event">◷<b>Event</b></button><button class="type" data-type="social">◎<b>Social</b></button><button class="type" data-type="whatsapp">◌<b>WhatsApp</b></button><button class="type" data-type="app">▣<b>App link</b></button>
+        </div>
+        <div id="fields"></div>
+        <div class="tabs"><button class="tab active" data-panel="design">Design</button><button class="tab" data-panel="frame">Frame</button><button class="tab" data-panel="logo">Logo</button><button class="tab" data-panel="quality">Quality</button></div>
+        <div id="design" class="panel active">
+          <div class="grid3"><label>QR color<input id="qrColor" type="color" value="#111827"></label><label>Background<input id="bgColor" type="color" value="#ffffff"></label><label>Size<select id="qrSize"><option value="220">Small</option><option value="300" selected>Medium</option><option value="420">Large</option><option value="600">Extra Large</option></select></label><label>Dots<select id="dotStyle"><option value="square">Square</option><option value="round">Round</option></select></label><label>Margin<select id="quietZone"><option value="3">Compact</option><option value="4" selected>Standard</option><option value="6">Wide</option></select></label><label>Gradient<select id="gradientMode"><option value="none">Solid</option><option value="vertical">Vertical</option><option value="horizontal">Horizontal</option><option value="diagonal">Diagonal</option></select></label><label>Error correction<select id="ecLevel"><option value="L">Low (L)</option><option value="M">Medium (M)</option><option value="Q">Quartile (Q)</option><option value="H" selected>High (H)</option></select></label></div>
+          <div id="gradientColors" class="grid2 hidden"><label>Gradient end<input id="qrColor2" type="color" value="#7c3aed"></label><label>Gradient angle<select id="gradientAngle"><option value="0">0°</option><option value="45" selected>45°</option><option value="90">90°</option><option value="135">135°</option></select></label></div>
+        </div>
+        <div id="frame" class="panel"><div class="grid3"><label>Frame<select id="frameStyle"><option value="none">None</option><option value="scan">SCAN ME</option><option value="label">Custom label</option><option value="pill">Pill label</option></select></label><label id="frameTextWrap" class="hidden">Text<input id="frameText" maxlength="32" value="SCAN ME"></label><label>Position<select id="framePosition"><option value="bottom">Bottom</option><option value="top">Top</option></select></label><label>Frame color<input id="frameColor" type="color" value="#111827"></label><label>Text color<input id="frameTextColor" type="color" value="#ffffff"></label></div></div>
+        <div id="logo" class="panel"><div class="logo-row"><label class="file">Add logo<input id="logoInput" type="file" accept="image/png,image/jpeg,image/webp"></label><button id="removeLogo">Remove</button><span id="logoName" class="muted">No logo selected</span></div><div class="grid2 logo-controls"><label>Logo size<select id="logoSize"><option value="14">Small</option><option value="18" selected>Medium</option><option value="22">Large</option></select></label><label>Logo opacity<input id="logoOpacity" type="range" min="30" max="100" value="100"></label></div><p class="muted">Logo is placed in a protected center area. With a logo, error correction is always set to H.</p></div>
+        <div id="quality" class="panel"><div class="quality-grid"><div><b>Scanability</b><strong id="qualityScore">—</strong></div><div><b>Contrast</b><strong id="contrastScore">—</strong></div><div><b>EC level</b><strong id="ecScore">H</strong></div></div><p id="contrastWarning" class="warning hidden"></p><p class="muted">The checker is a visual safety aid, not a guarantee for every scanner or print condition.</p><button id="inspectBtn" type="button">Run QR Inspector</button></div>
+        <p id="formMessage" class="error" role="alert"></p>
+        <button id="generateBtn" class="primary generate-btn">Generate QR Code <span>↗</span></button>
+      </section>
+      <aside class="card preview">
+        <div class="preview-head"><div><h2>Preview</h2><p class="muted">What you see is what you export.</p></div><strong id="qrStatus">Ready</strong></div>
+        <div id="qrArea"><div id="qrEmpty"><b>QR</b><strong>Your QR appears here</strong><span>Enter your content and generate.</span></div><div id="qrOutput" class="hidden"></div></div>
+        <div class="chips"><span id="readoutType">URL</span><span id="readoutSize">Medium</span><span id="readoutEC">H EC</span><span id="readoutQuality">Ready</span></div>
+        <div id="actions" class="actions hidden"><button data-action="png">PNG</button><button data-action="svg">SVG</button><button data-action="jpg">JPG</button><button data-action="webp">WebP</button><button data-action="copy">Copy</button><button data-action="print">Print</button></div>
+      </aside>
+    </div>
+  </div>
+</section>
+<section id="page-scanner" class="page"><div class="container narrow"><div class="hero compact-hero"><span>SMART SCANNER</span><h1>Scan a QR code.</h1><p>Use the camera or upload an image. Scans stay on your device.</p></div><section class="card"><div id="reader"><span>Camera scanner is ready.</span></div><div class="controls"><button id="startScanner" class="primary">Start camera</button><button id="stopScanner" disabled>Stop</button><label class="file">Scan image<input id="scanImage" type="file" accept="image/*"></label></div><p id="scannerMessage" class="error"></p><div id="scanResult" class="result hidden"><small>SCAN RESULT</small><pre id="scanText"></pre><div><button id="copyScan">Copy result</button><button id="openScan" class="primary hidden">Open URL</button></div></div></section></div></section>
+<section id="page-batch" class="page"><div class="container"><div class="hero compact-hero"><span>BATCH STUDIO</span><h1>Generate up to 500 QR codes.</h1><p>One value per line. Generation happens locally in small chunks to keep phones responsive.</p></div><section class="card batch"><div><label>Values<textarea id="batchInput" placeholder="https://example.com/1&#10;https://example.com/2&#10;https://example.com/3"></textarea></label><div class="grid3"><label>Max items<select id="batchLimit"><option value="100">100</option><option value="250">250</option><option value="500" selected>500</option></select></label><label>QR color<input id="batchColor" type="color" value="#111827"></label><label>Background<input id="batchBg" type="color" value="#ffffff"></label></div><div class="batch-actions"><button id="generateBatch" class="primary">Generate batch</button><button id="cancelBatch" disabled>Cancel</button><label class="file">Import CSV/TXT<input id="batchFile" type="file" accept=".csv,.txt,text/csv,text/plain"></label></div><div class="progress"><i id="batchProgress"></i></div><small id="batchProgressText" class="muted">Ready</small></div><div><div class="batch-head"><h2 id="batchCount">0 QR codes</h2><button id="downloadBatch" disabled>Download ZIP</button></div><div id="batchPreview" class="batch-preview">Your batch preview will appear here.</div></div></section><p id="batchMessage" class="error"></p></div></section>
+<section id="page-templates" class="page"><div class="container"><div class="hero compact-hero"><span>START FASTER</span><h1>Templates for common QR jobs.</h1><p>Pick a starting point, then customize it.</p></div><div id="templateGrid" class="templates"></div></div></section>
+<section id="page-history" class="page"><div class="container narrow"><div class="hero compact-hero history-head"><div><span>LOCAL LIBRARY</span><h1>My QR codes.</h1><p>Stored only in this browser.</p></div><button id="clearHistory">Clear all</button></div><div class="history-tools"><input id="historySearch" placeholder="Search QR library…"><select id="historyFilter"><option value="all">All types</option></select><select id="historySort"><option value="new">Newest</option><option value="old">Oldest</option><option value="favorite">Favorites</option></select></div><div id="historyList"></div></div></section>
+</main>
+<footer><b>QR Studio v1</b><span>•</span><span>Local-first</span><span>•</span><span>No account required</span></footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><button id="modalClose" class="modal-close" aria-label="Close">×</button><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
+</body>
+</html>
